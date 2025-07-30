@@ -1,5 +1,7 @@
+<script setup>
+    import Principal from '../components/principal.vue';
+</script>
+
 <template>
-    <div class="mt-17">
-        <h1>Página de Inicio</h1>
-    </div>
+    <Principal />
 </template>
