@@ -1,5 +1,6 @@
 <script setup>
-    import { ref, onMounted, onBeforeUnmount } from 'vue'
+    import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
+    import { useRoute } from 'vue-router'
     import {HomeIcon,WrenchIcon,ChatBubbleLeftRightIcon,InformationCircleIcon,PhoneIcon,Bars3Icon,XMarkIcon} from '@heroicons/vue/24/outline'
 
     const showMenu = ref(false)
@@ -7,28 +8,28 @@
         showMenu.value = !showMenu.value
     }
 
+    const closeMenu = () => {
+    showMenu.value = false
+    }
+
+
     const showMenuBar = ref(true)
     let lastScrollY = window.scrollY
     const handleScroll = () => {
-    const currentScrollY = window.scrollY
-        if (currentScrollY > lastScrollY && currentScrollY > 50) {
-            showMenuBar.value = false 
-        } else {
-            showMenuBar.value = true
-        }
+        const currentScrollY = window.scrollY
+        showMenuBar.value = !(currentScrollY > lastScrollY && currentScrollY > 50)
         lastScrollY = currentScrollY
     }
+    onMounted(() => window.addEventListener('scroll', handleScroll))
+    onBeforeUnmount(() => window.removeEventListener('scroll', handleScroll))
 
-    onMounted(() => {
-        window.addEventListener('scroll', handleScroll)
-    })
-    onBeforeUnmount(() => {
-        window.removeEventListener('scroll', handleScroll)
-    })
+    const route = useRoute()
+    const isHome = computed(() => route.path === '/' && !route.hash)
+    const isNosotros = computed(() => route.hash === '#nosotros')
 </script>
 
 <template>
-    <nav :class="['bg-gray-900 text-white p-4 fixed top-0 left-0 w-full z-50 shadow-lg transition-transform duration-300',showMenuBar ? 'translate-y-0' : '-translate-y-full']">
+    <nav :class="['bg-gray-900 text-white p-4 fixed top-0 left-0 w-full z-50 shadow-lg transition-transform duration-300', showMenuBar ? 'translate-y-0' : '-translate-y-full']">
         <div class="flex justify-between items-center">
             <div class="flex items-center">
                 <img src="../assets/logo.png" alt="logo" class="h-10 w-10 inline-block mr-2">
@@ -38,31 +39,30 @@
                 <Bars3Icon v-if="!showMenu" class="w-6 h-6" />
                 <XMarkIcon v-else class="w-6 h-6" />
             </button>
+
             <ul class="max-md:hidden text-md flex">
                 <li>
-                    <router-link to="/" exact-active-class="bg-white text-gray-900" class="pt-1 pb-1 w-30 rounded-lg flex items-center justify-center hover:bg-white hover:text-gray-900 duration-150">
-                        Inicio
-                    </router-link>
+                    <router-link
+                        to="/"
+                        class="pt-1 pb-1 w-30 rounded-lg flex items-center justify-center px-4 transition-colors"
+                        :class="isHome ? 'bg-white text-gray-900' : 'hover:bg-white hover:text-gray-900'"
+                    >Inicio</router-link>
                 </li>
                 <li>
-                    <router-link to="/services" exact-active-class="bg-white text-gray-900" class="ml-1 pt-1 pb-1 w-30 rounded-lg flex items-center justify-center hover:bg-white hover:text-gray-900 duration-150">
-                        Servicios
-                    </router-link>
+                    <router-link
+                        to="/#nosotros"
+                        class="ml-1 pt-1 pb-1 w-30 rounded-lg flex items-center justify-center px-4 transition-colors"
+                        :class="isNosotros ? 'bg-white text-gray-900' : 'hover:bg-white hover:text-gray-900'"
+                    >Acerca de</router-link>
                 </li>
                 <li>
-                    <router-link to="/testimonials" exact-active-class="bg-white text-gray-900" class="ml-1 pt-1 pb-1 w-30 rounded-lg flex items-center justify-center hover:bg-white hover:text-gray-900 duration-150">
-                        Testimonios
-                    </router-link>
+                    <router-link to="/services" exact-active-class="bg-white text-gray-900" class="ml-1 pt-1 pb-1 w-30 rounded-lg flex items-center justify-center hover:bg-white hover:text-gray-900 duration-150">Servicios</router-link>
                 </li>
                 <li>
-                    <router-link to="/about" exact-active-class="bg-white text-gray-900" class="ml-1 pt-1 pb-1 w-30 rounded-lg flex items-center justify-center hover:bg-white hover:text-gray-900 duration-150">
-                        Acerca de
-                    </router-link>
+                    <router-link to="/testimonials" exact-active-class="bg-white text-gray-900" class="ml-1 pt-1 pb-1 w-30 rounded-lg flex items-center justify-center hover:bg-white hover:text-gray-900 duration-150">Testimonios</router-link>
                 </li>
                 <li>
-                    <router-link to="/contact" exact-active-class="bg-white text-gray-900" class="ml-1 pt-1 pb-1 w-30 rounded-lg flex items-center justify-center hover:bg-white hover:text-gray-900 duration-150">
-                        Contacto
-                    </router-link>
+                    <router-link to="/contact" exact-active-class="bg-white text-gray-900" class="ml-1 pt-1 pb-1 w-30 rounded-lg flex items-center justify-center hover:bg-white hover:text-gray-900 duration-150">Contacto</router-link>
                 </li>
             </ul>
         </div>
@@ -70,33 +70,43 @@
         <transition name="slide-fade">
             <ul v-show="showMenu" class="md:hidden text-md mt-3">
                 <li class="mt-7">
-                    <router-link to="/" exact-active-class="bg-white text-gray-900" class="p-3 rounded-lg flex items-center mb-2 hover:bg-white hover:text-gray-900 duration-150">
-                        <HomeIcon class="bg-white text-gray-900 rounded-full w-9 h-9 p-2 mr-2" />Inicio
+                    <router-link
+                        to="/"
+                        :class="[isHome ? 'bg-white text-gray-900' : 'hover:bg-white hover:text-gray-900', 'p-3 rounded-lg flex items-center mb-2 duration-150']">
+                        <HomeIcon :class="[isHome ? 'text-gray-900 bg-white' : 'bg-gray-900 text-white', 'rounded-full w-9 h-9 p-2 mr-2']" />
+                        Inicio
+                    </router-link>
+                </li>
+                <li>
+                    <router-link
+                        to="/#nosotros"
+                        :class="[isNosotros ? 'bg-white text-gray-900' : 'hover:bg-white hover:text-gray-900', 'p-3 rounded-lg flex items-center mb-2 duration-150']">
+                        <InformationCircleIcon :class="[isNosotros ? 'text-gray-900 bg-white' : 'bg-gray-900 text-white', 'rounded-full w-9 h-9 p-2 mr-2']" />
+                        Acerca de
                     </router-link>
                 </li>
                 <li>
                     <router-link to="/services" exact-active-class="bg-white text-gray-900" class="p-3 rounded-lg flex items-center mb-2 hover:bg-white hover:text-gray-900 duration-150">
-                        <WrenchIcon class="bg-white text-gray-900 rounded-full w-9 h-9 p-2 mr-2" />Servicios
+                        <WrenchIcon class="bg-gray-900 text-white rounded-full w-9 h-9 p-2 mr-2" />
+                        Servicios
                     </router-link>
                 </li>
                 <li>
                     <router-link to="/testimonials" exact-active-class="bg-white text-gray-900" class="p-3 rounded-lg flex items-center mb-2 hover:bg-white hover:text-gray-900 duration-150">
-                        <ChatBubbleLeftRightIcon class="bg-white text-gray-900 rounded-full w-9 h-9 p-2 mr-2" />Testimonios
-                    </router-link>
-                </li>
-                <li>
-                    <router-link to="/about" exact-active-class="bg-white text-gray-900" class="p-3 rounded-lg flex items-center mb-2 hover:bg-white hover:text-gray-900 duration-150">
-                        <InformationCircleIcon class="bg-white text-gray-900 rounded-full w-9 h-9 p-2 mr-2" />Acerca de
+                        <ChatBubbleLeftRightIcon class="bg-gray-900 text-white rounded-full w-9 h-9 p-2 mr-2" />
+                        Testimonios
                     </router-link>
                 </li>
                 <li>
                     <router-link to="/contact" exact-active-class="bg-white text-gray-900" class="p-3 rounded-lg flex items-center mb-2 hover:bg-white hover:text-gray-900 duration-150">
-                        <PhoneIcon class="bg-white text-gray-900 rounded-full w-9 h-9 p-2 mr-2" />Contacto
+                        <PhoneIcon class="bg-gray-900 text-white rounded-full w-9 h-9 p-2 mr-2" />
+                        Contacto
                     </router-link>
                 </li>
             </ul>
         </transition>
-  </nav>
+
+    </nav>
 </template>
 
 <style scoped>

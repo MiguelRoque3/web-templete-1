@@ -1,6 +1,6 @@
 <template>
-    <div class="mt-17 w-full h-[100vh] bg-[url('/src/assets/bg.jpg')] bg-cover bg-center">
-        <div class="flex flex-col items-center justify-center h-full p-1">
+    <section class="mt-17 w-full h-[100vh] bg-[url('/src/assets/bg1.jpg')] bg-fixed bg-cover bg-center">
+        <div class="flex flex-col items-center justify-center h-full p-1 bg-[url('/src/assets/bg.png')] bg-cover bg-center">
             <h1 class="text-5xl font-bold text-gray-900 mb-4 text-center">
                 Bienvenido al mejor sitio web
             </h1>
@@ -8,13 +8,13 @@
                 Aquí encontrarás todo lo que necesitas.
             </p>
             <div class="flex space-x-4">
-                <button class="px-6 py-2 bg-gray-900 text-white rounded hover:bg-white hover:text-gray-900 transition duration-300">
+                <router-link to="/#nosotros" class="px-6 py-2 text-white bg-gray-900 rounded hover:bg-white hover:text-gray-900 transition duration-300">
                     Sobre Nosotros
-                </button>
-                <button class="px-6 py-2 text-black rounded hover:bg-gray-900 hover:text-white transition duration-300">
+                </router-link>
+                <button class="px-6 py-2 text-white bg-gray-900 rounded hover:bg-white hover:text-gray-900 transition duration-300">
                     Contáctanos
                 </button>
             </div>
         </div>
-    </div>
+    </section>
 </template>
