@@ -27,7 +27,7 @@
     const isHome = computed(() => route.path === '/' && !route.hash)
     const isNosotros = computed(() => route.hash === '#nosotros')
     const isServices = computed(() => route.hash === '#servicios')
-    const isTestimonials = computed(() => route.path === '/testimonios')
+    const isTestimonials = computed(() => route.hash === '#testimonios')
 </script>
 
 <template>

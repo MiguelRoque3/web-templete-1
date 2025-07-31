@@ -2,6 +2,7 @@
     import Extract from '../components/extract.vue';
     import Principal from '../components/principal.vue';
     import Services from '../components/services.vue';
+import Testimonials from '../components/testimonials.vue';
 </script>
 
 <template>
@@ -10,4 +11,5 @@
         <Extract />
         <Services />
     </div>
+    <Testimonials />
 </template>
