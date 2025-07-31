@@ -26,6 +26,8 @@
     const route = useRoute()
     const isHome = computed(() => route.path === '/' && !route.hash)
     const isNosotros = computed(() => route.hash === '#nosotros')
+    const isServices = computed(() => route.hash === '#servicios')
+    const isTestimonials = computed(() => route.path === '/testimonios')
 </script>
 
 <template>
@@ -56,10 +58,20 @@
                     >Acerca de</router-link>
                 </li>
                 <li>
-                    <router-link to="/services" exact-active-class="bg-white text-gray-900" class="ml-1 pt-1 pb-1 w-30 rounded-lg flex items-center justify-center hover:bg-white hover:text-gray-900 duration-150">Servicios</router-link>
+                    <router-link 
+                        to="/#servicios"
+                        class="ml-1 pt-1 pb-1 w-30 rounded-lg flex items-center justify-center px-4 transition-colors"
+                        :class="isServices ? 'bg-white text-gray-900' : 'hover:bg-white hover:text-gray-900'" 
+                        >Servicios
+                    </router-link>
                 </li>
                 <li>
-                    <router-link to="/testimonials" exact-active-class="bg-white text-gray-900" class="ml-1 pt-1 pb-1 w-30 rounded-lg flex items-center justify-center hover:bg-white hover:text-gray-900 duration-150">Testimonios</router-link>
+                    <router-link 
+                        to="/#testimonios" 
+                        class="ml-1 pt-1 pb-1 w-30 rounded-lg flex items-center justify-center px-4 transition-colors"
+                        :class="isTestimonials ? 'bg-white text-gray-900' : 'hover:bg-white hover:text-gray-900'">
+                        Testimonios
+                    </router-link>
                 </li>
                 <li>
                     <router-link to="/contact" exact-active-class="bg-white text-gray-900" class="ml-1 pt-1 pb-1 w-30 rounded-lg flex items-center justify-center hover:bg-white hover:text-gray-900 duration-150">Contacto</router-link>
@@ -73,7 +85,7 @@
                     <router-link
                         to="/"
                         :class="[isHome ? 'bg-white text-gray-900' : 'hover:bg-white hover:text-gray-900', 'p-3 rounded-lg flex items-center mb-2 duration-150']">
-                        <HomeIcon :class="[isHome ? 'text-gray-900 bg-white' : 'bg-gray-900 text-white', 'rounded-full w-9 h-9 p-2 mr-2']" />
+                        <HomeIcon class="bg-gray-900 text-white rounded-full w-9 h-9 p-2 mr-2" />
                         Inicio
                     </router-link>
                 </li>
@@ -81,18 +93,22 @@
                     <router-link
                         to="/#nosotros"
                         :class="[isNosotros ? 'bg-white text-gray-900' : 'hover:bg-white hover:text-gray-900', 'p-3 rounded-lg flex items-center mb-2 duration-150']">
-                        <InformationCircleIcon :class="[isNosotros ? 'text-gray-900 bg-white' : 'bg-gray-900 text-white', 'rounded-full w-9 h-9 p-2 mr-2']" />
+                        <InformationCircleIcon class="bg-gray-900 text-white rounded-full w-9 h-9 p-2 mr-2" />
                         Acerca de
                     </router-link>
                 </li>
                 <li>
-                    <router-link to="/services" exact-active-class="bg-white text-gray-900" class="p-3 rounded-lg flex items-center mb-2 hover:bg-white hover:text-gray-900 duration-150">
+                    <router-link 
+                        to="/#servicios" 
+                        :class="[isServices ? 'bg-white text-gray-900' : 'hover:bg-white hover:text-gray-900', 'p-3 rounded-lg flex items-center mb-2 duration-150']">
                         <WrenchIcon class="bg-gray-900 text-white rounded-full w-9 h-9 p-2 mr-2" />
                         Servicios
                     </router-link>
                 </li>
                 <li>
-                    <router-link to="/testimonials" exact-active-class="bg-white text-gray-900" class="p-3 rounded-lg flex items-center mb-2 hover:bg-white hover:text-gray-900 duration-150">
+                    <router-link 
+                        to="/#testimonios" 
+                        :class="[isTestimonials ? 'bg-white text-gray-900' : 'hover:bg-white hover:text-gray-900', 'p-3 rounded-lg flex items-center mb-2 duration-150']">
                         <ChatBubbleLeftRightIcon class="bg-gray-900 text-white rounded-full w-9 h-9 p-2 mr-2" />
                         Testimonios
                     </router-link>
